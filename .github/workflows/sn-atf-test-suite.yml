@@ -1,0 +1,31 @@
+name: ServiceNow CI/CD ATF Test Suite
+
+on:
+  workflow_dispatch:
+    inputs:
+      username:
+        description: 'Username to ServiceNow instance'
+        required: true
+      password:
+        description: 'Password to ServiceNow instance'
+        required: true
+      instance_url:
+        description: 'Instance URL'
+      atf_test_suite_name:
+        description: 'ATF test suite name'
+        required: true
+
+jobs:
+  test:
+    name: Run ATF in Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ServiceNow CI/CD Run ATF Test
+        uses: ServiceNow/sncicd-tests-run@2.0.0
+        with:
+          testSuiteName: ${{ github.event.inputs.atf_test_suite_name }}
+        env:
+          nowUsername: ${{ github.event.inputs.username }}
+          nowPassword: ${{ github.event.inputs.password }}
+          nowInstallInstance: ${{ github.event.inputs.instance_url }}
